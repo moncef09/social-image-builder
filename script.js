@@ -195,7 +195,7 @@ function skipCurrentElement() {
  * It shows the final UI section for image generation.
  */
 function displayFinalResults() {
-    statusText.textContent = "✅ Backgrounds selected! Now for the final step.";
+    statusText.textContent = "✅ Elements selected! Now for the final step.";
     suggestionsGrid.innerHTML = '';
     skipBtn.classList.add('hidden');
     startBtn.textContent = 'Start Over';
@@ -218,7 +218,10 @@ async function createFinalImage() {
 
     const formData = new FormData();
     formData.append('originalPrompt', promptInput.value);
-    formData.append('selectedUrls', JSON.stringify(elements)); // Use search terms for context
+    // Send search terms for context (elements array) as before
+    formData.append('selectedUrls', JSON.stringify(elements));
+    // Send the actual image URLs chosen by the user for each element
+    formData.append('selectedImageUrls', JSON.stringify(selectedImageUrls));
     formData.append('productPhotos', productPhoto);
     formData.append('agentDetails', JSON.stringify(agentDetails));
 

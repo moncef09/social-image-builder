@@ -99,7 +99,7 @@ app.post('/generate-elements', async (req, res) => {
 // NEW Endpoint 2: Creates the final image
 app.post('/create-final-image', upload.array('productPhotos', 1), async (req, res) => {
     try {
-        const { originalPrompt, selectedUrls, agentDetails } = req.body;
+        const { originalPrompt, selectedUrls, selectedImageUrls, agentDetails } = req.body;
         const productImage = req.files[0];
         if (!productImage) return res.status(400).json({ error: "A product photo is required." });
 
@@ -107,7 +107,8 @@ app.post('/create-final-image', upload.array('productPhotos', 1), async (req, re
         const { GoogleGenerativeAI } = require('@google/generative-ai');
         const genAI2 = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const textModel = genAI2.getGenerativeModel({ model: 'gemini-1.5-flash' });
-        
+
+        // Describe the product photo in detail to anchor the AI on what should remain unchanged
         const productDescriptionPrompt = "Describe this product image in vivid, photorealistic detail for an AI image generator. Focus on material, shape, and key features.";
         const imagePart = { inlineData: { data: productImage.buffer.toString("base64"), mimeType: productImage.mimetype }};
         const descriptionResult = await textModel.generateContent([productDescriptionPrompt, imagePart]);
@@ -125,16 +126,57 @@ app.post('/create-final-image', upload.array('productPhotos', 1), async (req, re
         } catch (err) {
             console.warn('Could not parse agent details:', err);
         }
+
+        // Build the final prompt: incorporate the user's concept, the detailed product description,
+        // the search terms (themes), and the mood/style preferences. Advise not to change the product appearance.
         const finalPromptInstruction = `Create a single, detailed, photorealistic image generation prompt. Combine: 1. The concept: "${originalPrompt}". 2. The product: ${productDescription}. 3. The mood/setting from these themes: ${selectedUrls}. Also incorporate the following preferences: mood - ${mood}; style - ${style}. Generate only the final prompt paragraph. Also include a big important notice saying do not change the product appearance!`;
         const finalPromptResult = await textModel.generateContent(finalPromptInstruction);
         const finalImagePrompt = await finalPromptResult.response.text();
 
         console.log("Final engineered prompt:", finalImagePrompt);
 
-        // --- Step B: Generate the image using the user's specified model ---
+        // --- Step B: Gather reference images for elements selected by the user ---
+        let referenceParts = [];
+        try {
+            if (selectedImageUrls) {
+                const urls = typeof selectedImageUrls === 'string' ? JSON.parse(selectedImageUrls) : selectedImageUrls;
+                if (Array.isArray(urls) && urls.length > 0) {
+                    // Dynamically import node-fetch only when needed
+                    const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+                    // Fetch each image and convert to base64
+                    const buffers = await Promise.all(urls.map(async (u) => {
+                        try {
+                            const resp = await fetch(u);
+                            const arrayBuffer = await resp.arrayBuffer();
+                            const buffer = Buffer.from(arrayBuffer);
+                            // Try to guess mime type from response headers or fallback
+                            const mimeType = resp.headers.get('content-type') || 'image/jpeg';
+                            return { data: buffer.toString('base64'), mimeType };
+                        } catch (err) {
+                            console.warn('Error fetching reference image', u, err);
+                            return null;
+                        }
+                    }));
+                    referenceParts = buffers.filter(Boolean).map((buf) => ({ inlineData: { data: buf.data, mimeType: buf.mimeType } }));
+                }
+            }
+        } catch (err) {
+            console.warn('Failed to process selected image URLs:', err);
+        }
+
+        // Compose the parts for the generative model: start with the text prompt, followed by any reference images, and
+        // finally include the product image (again) as a reference to ensure it remains unchanged.
+        const parts = [];
+        parts.push({ text: finalImagePrompt });
+        // Insert the user-selected reference images
+        referenceParts.forEach((part) => parts.push(part));
+        // Append the original product image again for reinforcement
+        parts.push({ inlineData: { data: productImage.buffer.toString('base64'), mimeType: productImage.mimetype } });
+
+        // --- Step C: Generate the image using Gemini model ---
         const response = await genAI.models.generateContent({
             model: "gemini-2.5-flash-image-preview",
-            contents: [{ parts: [{ text: finalImagePrompt }] }], // Structure contents correctly
+            contents: [{ parts: parts }],
         });
 
         let imageData = null;
@@ -144,13 +186,12 @@ app.post('/create-final-image', upload.array('productPhotos', 1), async (req, re
                 break; // Found the image, no need to loop further
             }
         }
-        
-        if (imageData) {
-            res.json({ imageData: imageData }); // Send base64 image data back to the browser
-        } else {
-            throw new Error("Image generation failed, no image data received.");
-        }
 
+        if (imageData) {
+            res.json({ imageData: imageData });
+        } else {
+            throw new Error('Image generation failed, no image data received.');
+        }
     } catch (error) {
         console.error('Error in final image creation:', error);
         res.status(500).json({ error: 'Failed to create final image.' });
