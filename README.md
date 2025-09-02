@@ -1,6 +1,11 @@
 # Social Media Image Builder
 
-This project is a small demo of how generative AI can streamline content creation for social media. It allows you to describe a post, choose the mood and style, select background images, and then upload your product photo. Behind the scenes, a Node.js server orchestrates calls to Google Gemini to extract key elements, generate prompts and create a final composite image.
+<!-- Illustrative hero image showcasing a generative AI concept -->
+<p align="center">
+  <img src="./ai_illustration.png" alt="Abstract generative AI illustration" width="600">
+</p>
+
+This project is a small demo of how generative AI can streamline content creation for social media. It allows you to describe a post, choose the mood and style, select reference images for each element, and then upload your product photo. Behind the scenes, a Node.js server orchestrates calls to Google Gemini to extract key elements, generate prompts and create a final composite image.
 
 ## ✨ Features
 
@@ -10,12 +15,27 @@ This project is a small demo of how generative AI can streamline content creatio
 - **AI‑generated composite** – Once you’ve selected backgrounds and uploaded a product photo, the server constructs a single detailed prompt and uses the Gemini image model to generate a photorealistic composition. The product’s appearance is preserved while the background reflects your chosen mood and style.
 - **Modern, responsive UI** – Built with vanilla JavaScript and custom CSS, the interface uses a step‑by‑step layout, chat bubbles for the agentic questions, and clear calls to action.
 
+<!-- Feature collage to accompany the feature list -->
+<p align="center">
+  <img src="./features_illustration.png" alt="Colorful collage summarizing features" width="600">
+</p>
+
+<!-- Visual summary of the creative workflow in this project -->
+<p align="center">
+  <img src="./workflow_illustration.png" alt="Abstract workflow illustration" width="700">
+</p>
+
 ## 🛠 Technology
 
 - **Frontend:** HTML, CSS and JavaScript (no frameworks). The interface is structured into clear steps and uses flexbox/grid for layout.
 - **Backend:** Node.js with Express. It manages the agentic flow, calls the Google Generative AI SDK, and serves as an API for the frontend.
 - **AI services:** Google Gemini 1.5/2.5 models for text and image generation.
 - **Search:** Google Custom Search API for retrieving background photos.
+
+<!-- Decorative technology illustration -->
+<p align="center">
+  <img src="./tech_illustration.png" alt="Abstract technology illustration" width="600">
+</p>
 
 ## 🚀 Getting Started
 
@@ -44,6 +64,11 @@ This project is a small demo of how generative AI can streamline content creatio
 5. **Open the frontend** by loading `index.html` in your browser. You can also serve it via a simple web server (e.g., `npx http-server`).
 
 ## 🧠 How It Works
+
+<!-- Visual process flow diagram summarizing user journey -->
+<p align="center">
+  <img src="./process_flow_diagram.png" alt="Process flow diagram showing user journey" width="650">
+</p>
 
 1. **Describe your post** – Enter a short description like “a cozy coffee shop on a rainy day with a warm latte”.
 2. **Answer the agent’s questions** – The app asks about mood (e.g., cozy, energetic) and style (e.g., pastel colors, black‑and‑white) to guide the search and composition.
