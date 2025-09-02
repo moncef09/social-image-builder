@@ -1,9 +1,6 @@
 # Social Media Image Builder
 
-<!-- Illustrative hero image showcasing a generative AI concept -->
-<p align="center">
-  <img src="./ai_illustration.png" alt="Abstract generative AI illustration" width="600">
-</p>
+
 
 This project is a small demo of how generative AI can streamline content creation for social media. It allows you to describe a post, choose the mood and style, select reference images for each element, and then upload your product photo. Behind the scenes, a Node.js server orchestrates calls to Google Gemini to extract key elements, generate prompts and create a final composite image.
 
@@ -15,15 +12,8 @@ This project is a small demo of how generative AI can streamline content creatio
 - **AI‑generated composite** – Once you’ve selected backgrounds and uploaded a product photo, the server constructs a single detailed prompt and uses the Gemini image model to generate a photorealistic composition. The product’s appearance is preserved while the background reflects your chosen mood and style.
 - **Modern, responsive UI** – Built with vanilla JavaScript and custom CSS, the interface uses a step‑by‑step layout, chat bubbles for the agentic questions, and clear calls to action.
 
-<!-- Feature collage to accompany the feature list -->
-<p align="center">
-  <img src="./features_illustration.png" alt="Colorful collage summarizing features" width="600">
-</p>
 
-<!-- Visual summary of the creative workflow in this project -->
-<p align="center">
-  <img src="./workflow_illustration.png" alt="Abstract workflow illustration" width="700">
-</p>
+
 
 ## 🛠 Technology
 
@@ -32,10 +22,7 @@ This project is a small demo of how generative AI can streamline content creatio
 - **AI services:** Google Gemini 1.5/2.5 models for text and image generation.
 - **Search:** Google Custom Search API for retrieving background photos.
 
-<!-- Decorative technology illustration -->
-<p align="center">
-  <img src="./tech_illustration.png" alt="Abstract technology illustration" width="600">
-</p>
+
 
 ## 🚀 Getting Started
 
