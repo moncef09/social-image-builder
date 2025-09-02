@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Image Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="hero">
+            <h1>Social Media Image Builder 🖼️</h1>
+            <p>Bring your vision to life – describe your idea, customize the mood, choose backgrounds and watch your product shine.</p>
+        </header>
+
+        <!-- Step 1: Describe Post -->
+        <section id="description-section" class="step">
+            <h2><span class="step-number">1</span> Describe your post</h2>
+            <div class="input-area">
+                <input type="text" id="prompt-input" placeholder="Enter your post description...">
+                <button id="start-btn">Start</button>
+            </div>
+        </section>
+
+        <!-- Step 2: Agentic flow – mood & style -->
+        <section id="chat-section" class="step hidden">
+            <h2><span class="step-number">2</span> Customize mood & style</h2>
+            <div id="chat-container" class="chat-container"></div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Type your response..." autocomplete="off">
+                <button id="send-btn">Send</button>
+            </div>
+        </section>
+
+        <!-- Step 3: Choose background images -->
+        <section id="images-section" class="step hidden">
+            <h2><span class="step-number">3</span> Choose background images</h2>
+            <p id="status-text" class="status-text"></p>
+            <div id="suggestions-grid" class="image-grid"></div>
+            <div class="skip-area">
+                <button id="skip-btn" class="hidden">Skip →</button>
+            </div>
+            <hr>
+            <h3>Your selected images</h3>
+            <div id="final-selections" class="image-grid"></div>
+        </section>
+
+        <!-- Step 4: Add product photo and generate final image -->
+        <section id="generation-area" class="step hidden">
+            <h2><span class="step-number">4</span> Upload product & create final image</h2>
+            <p>Upload your product photo to create a new AI‑generated scene.</p>
+            <div class="input-area">
+                <input type="file" id="product-photo-input" accept="image/*">
+                <button id="generate-image-btn">✨ Create Final Image</button>
+            </div>
+            <div id="final-image-container">
+                <h3>Your generated masterpiece</h3>
+                <div id="final-image-display" class="image-display-box"></div>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
