@@ -1,7 +1,7 @@
 // --- CONFIGURATION ---
 // ⚠️ PASTE YOUR GOOGLE API KEY AND CX ID HERE
-const GOOGLE_API_KEY = 'AIzaSyBwmaX1VunJgUv2-YD7jSKbb3xQkIS90J0';
-const GOOGLE_CX = 'a48291e18283c4e0f';
+const GOOGLE_API_KEY = 'Enter your google api key here';
+const GOOGLE_CX = 'enter your google google cx key here';
 
 
 // --- DOM ELEMENTS ---
